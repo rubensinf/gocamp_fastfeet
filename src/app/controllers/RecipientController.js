@@ -23,6 +23,7 @@ class RecipientController {
             zip_code,
             street,
             number,
+            complement,
             state,
             city,
         } = await Recipient.create(req.body);
