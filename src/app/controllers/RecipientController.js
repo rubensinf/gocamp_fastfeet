@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import Recipient from '../models/Recipient';
+import User from '../models/User';
 
 class RecipientController {
     async store(req, res) {
@@ -15,6 +16,16 @@ class RecipientController {
 
         if (!(await schema.isValid(req.body))) {
             return res.status(400).json({ error: 'Validation fails' });
+        }
+
+        const logged = await User.findOne({
+            where: { id: req.userId },
+        });
+
+        console.log(logged);
+
+        if (logged && logged.email !== 'admin@fastfeet.com') {
+            return res.status(400).json({ error: 'Admin must be logged' });
         }
 
         const {
